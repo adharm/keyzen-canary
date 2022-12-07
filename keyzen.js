@@ -1,46 +1,38 @@
 var data = {};
+var audio = {};
 var hits_correct = 0;
 var hits_wrong = 0;
 var start_time = 0;
 var hpm = 0;
 var ratio = 0;
 
-layouts={};
-layouts["colemak"] = " tnseriaodhplfuwyq;vmc,x.z/bk4738291056'\"!?:@$%&#*()_ABCDEFGHIJKLMNOPQRSTUVWXYZ~+-={}|^<>`[]\\";
-layouts["colemak-dh"] = " tnseriaogmplfuwyq;bjvhd,c.x/zk4738291056'\"!?:@$%&#*()_ABCDEFGHIJKLMNOPQRSTUVWXYZ~+-={}|^<>`[]\\";
-layouts["colemak-dhk"] = " tnseriaogkplfuwyq;bjvhd,c.x/zm4738291056'\"!?:@$%&#*()_ABCDEFGHIJKLMNOPQRSTUVWXYZ~+-={}|^<>`[]\\";
-layouts["colemak-dh-matrix"] = " tnseriaogmplfuwyq;bjdhc,x.z/vk4738291056'\"!?:@$%&#*()_ABCDEFGHIJKLMNOPQRSTUVWXYZ~+-={}|^<>`[]\\";
-layouts["colemak-dhk-matrix"] = " tnseriaogkplfuwyq;bjdhc,x.z/vm4738291056'\"!?:@$%&#*()_ABCDEFGHIJKLMNOPQRSTUVWXYZ~+-={}|^<>`[]\\";
-layouts["qwerty"] = " fjdksla;ghrueiwoqptyvmc,x.z/bn4738291056`-=[]\\'ABCDEFGHIJKLMNOPQRSTUVWXYZ~!@#$%^&*()_+{}|:\"<>?";
-layouts["custom"] = " #=-*_`>![]()1234567890";
-
-// layouts["azerty"] = " jfkdlsmqhgyturieozpabnvcxw6758493021`-=[]\\;',./ABCDEFGHIJKLMNOPQRSTUVWXYZ~!@#$%^&*()_+{}|:\"<>?";
-// layouts["b�po"] = " tesirunamc,�vodpl�jbk'.qxghyf�zw6758493021`-=[]\\;/ABCDEFGHIJKLMNOPQRSTUVWXYZ~!@#$%^&*()_+{}|:\"<>?";
-// layouts["norman"] = " ntieosaygjkufrdlw;qbpvmcxz1234567890'\",.!?:;/@$%&#*()_ABCDEFGHIJKLMNOPQRSTUVWXYZ~+-={}|^<>`[]\\";
-// layouts["code-es6"] = " {}',;():.>=</_-|`!?#[]\\+\"@$%&*~^";
-
-data.chars = layouts["colemak-dh"];
+data.chars = " fjdkslaghrueiwoqptyvmcxzbn1234567890'\",.!?:;/@$%&#*()_ABCDEFGHIJKLMNOPQRSTUVWXYZ~+-={}|^<>`[]\\";
 data.consecutive = 5;
 data.word_length = 7;
-data.current_layout = "colemak-dh";
-data.custom_chars = '';
+data.current_layout = "qwerty";
+layouts={};
+layouts["azerty"] = " fjdkslqmghrueizoaptyvcxwbn1234567890'\",.!?:;/@$%&#*()_ABCDEFGHIJKLMNOPQRSTUVWXYZ~+-={}|^<>`[]\\";
+layouts["beakl15"] = " asetinybducorhfqzxgkmlpjvw1234567890'\",.!?:;/@$%&#*()_ABCDEFGHIJKLMNOPQRSTUVWXYZ~+-={}|^<>`[]\\";
+layouts["colemak"] = " tnseriaodhplfuwyqgjvmcxzbk1234567890'\",.!?:;/@$%&#*()_ABCDEFGHIJKLMNOPQRSTUVWXYZ~+-={}|^<>`[]\\";
+layouts["colemak-dh"] = " tnseriaogmplfuwyqbjvhdcxzk1234567890'\",.!?:;/@$%&#*()_ABCDEFGHIJKLMNOPQRSTUVWXYZ~+-={}|^<>`[]\\";
+layouts["colemak-dhk"] = " tnseriaogkplfuwyqbjvhdcxzm1234567890'\",.!?:;/@$%&#*()_ABCDEFGHIJKLMNOPQRSTUVWXYZ~+-={}|^<>`[]\\";
+layouts["dvorak"] = " uhetonasidpgcrlyfkmjwqvzxb1234567890'\",.!?:;/@$%&#*()_ABCDEFGHIJKLMNOPQRSTUVWXYZ~+-={}|^<>`[]\\";
+layouts["halmak"] = " tanehosibqruldwjqcpvxmkfyg1234567890'\",.!?:;/@$%&#*()_ABCDEFGHIJKLMNOPQRSTUVWXYZ~+-={}|^<>`[]\\";
+layouts["workman"] = " tnhesoaigywfrudpqbjclmxzvk1234567890'\",.!?:;/@$%&#*()_ABCDEFGHIJKLMNOPQRSTUVWXYZ~+-={}|^<>`[]\\";
+layouts["qwerty"] = " fjdkslaghrueiwoqptyvmcxzbn1234567890'\",.!?:;/@$%&#*()_ABCDEFGHIJKLMNOPQRSTUVWXYZ~+-={}|^<>`[]\\";
+layouts["qwertz"] = " fjdkslaghrueiwoqptzvmcxybn1234567890'\",.!?:;/@$%&#*()_ABCDEFGHIJKLMNOPQRSTUVWXYZ~+-={}|^<>`[]\\";
 
-CUSTOM_LAYOUT = 'custom';
 
 $(document).ready(function() {
+    load_audio();
     if (localStorage.data != undefined) {
         load();
-        if (data.current_layout == CUSTOM_LAYOUT && data.custom_chars) {
-            data.chars = data.custom_chars;
-        }
         render();
     }
     else {
         set_level(1);
     }
     $(document).keypress(keyHandler);
-
-    showActiveLayoutKeyboard();
 });
 
 
@@ -90,8 +82,6 @@ function set_layout(l) {
     data.keys_hit = "";
     save();
     render();
-
-    showActiveLayoutKeyboard();
 }
 
 
@@ -103,19 +93,19 @@ function keyHandler(e) {
         e.preventDefault();
     }
     else {
-    	return;
+        return;
     }
     data.keys_hit += key;
     if(key == data.word[data.word_index]) {
         hits_correct += 1;
         data.in_a_row[key] += 1;
-        (new Audio("click.mp3")).play();
+        play_audio_sample("correct");
     }
     else {
         hits_wrong += 1;
         data.in_a_row[data.word[data.word_index]] = 0;
         data.in_a_row[key] = 0;
-        (new Audio("clack.mp3")).play();
+        play_audio_sample("mistake");
         data.word_errors[data.word_index] = true;
     }
     data.word_index += 1;
@@ -130,13 +120,13 @@ function keyHandler(e) {
 }
 
 function next_word(){
-	if(get_training_chars().length == 0) {
-		level_up();
-	}
-	data.word = generate_word();
-	data.word_index = 0;
-	data.keys_hit = "";
-	data.word_errors = {};
+        if(get_training_chars().length == 0) {
+            level_up();
+        }
+        data.word = generate_word();
+        data.word_index = 0;
+        data.keys_hit = "";
+        data.word_errors = {};
 	update_stats();
 
     render();
@@ -146,7 +136,7 @@ function next_word(){
 
 function level_up() {
     if (data.level + 1 <= data.chars.length - 1) {
-        (new Audio('ding.wav')).play();
+        play_audio_sample("level_up");
     }
     l = Math.min(data.level + 1, data.chars.length);
     set_level(l);
@@ -163,6 +153,42 @@ function load() {
 }
 
 
+function load_audio() {
+    audio.samples = {};
+    audio.context = new (window.AudioContext || window.webkitAudioContext)();
+    load_audio_sample("correct", "click.wav");
+    load_audio_sample("mistake", "clack.wav");
+    load_audio_sample("level_up", "ding.wav");
+}
+
+
+function load_audio_sample(name, url) {
+    if (!audio.samples[name]) {
+        // fetch the .wav file via XMLHttpRequest as jQuery doesn't support 'arraybuffer' dataType
+        var request = new XMLHttpRequest();
+        request.open("GET", url, true);
+        request.responseType = "arraybuffer";
+        request.onload = function () {
+            audio.context.decodeAudioData(request.response).then(function (buffer) {
+                audio.samples[name] = buffer;
+            });
+        };
+        request.send();
+    }
+}
+
+
+function play_audio_sample(name) {
+    if (audio.samples[name]) {
+        var source = audio.context.createBufferSource();
+        source.buffer = audio.samples[name];
+        source.onended
+        source.connect(audio.context.destination);
+        source.start();
+    }
+}
+
+
 function render() {
     render_layout();
     render_level();
@@ -173,16 +199,16 @@ function render() {
 }
 
 function render_layout() {
-    var layouts_html = "<span id='layout'>";
-    for(var layout in layouts){
-        if(data.current_layout == layout){
-            layouts_html += "<span style='color: #F78D1D' onclick='set_layout(\"" + layout + "\");'> "
-        } else {
-            layouts_html += "<span style='color: #AAA' onclick='set_layout(\"" + layout + "\");'> "
-        }
-        layouts_html += layout + "</span>";
-    }
-    layouts_html += "</span>";
+	var layouts_html = "<span id='layout'>";
+	for(var layout in layouts){
+		if(data.current_layout == layout){
+			layouts_html += "<span style='color: #F00' onclick='set_layout(\"" + layout + "\");'> "
+		} else {
+		 layouts_html += "<span style='color: #AAA' onclick='set_layout(\"" + layout + "\");'> "
+		}
+		layouts_html += layout + "</span>";
+	}
+	layouts_html += "</span>";
     $("#layout").html('click to set layout: ' + layouts_html);
 }
 
@@ -192,7 +218,7 @@ function render_level() {
     var training_chars = get_training_chars();
     for (var c in data.chars) {
         if(training_chars.indexOf(data.chars[c]) != -1) {
-            chars += "<span style='color: #F78D1D' onclick='set_level(" + c + ");'>"
+            chars += "<span style='color: #F00' onclick='set_level(" + c + ");'>"
         }
         else if (level_chars.indexOf(data.chars[c]) != -1) {
             chars += "<span style='color: #000' onclick='set_level(" + c + ");'>"
@@ -210,48 +236,19 @@ function render_level() {
     }
     chars += "</span>";
     $("#level-chars").html('click to set level: ' + chars);
-
-    if (data.current_layout == CUSTOM_LAYOUT) {
-        $('#level-chars').append('<a id="edit-custom-chars" href="#" data-toggle="modal" data-target="#custom-chars-modal"></a>');
-        $('#level-chars #edit-custom-chars').append(' (<span style="color: #f78d1d">edit</span>)');
-
-        $editCustomCharsLink = $('#edit-custom-chars');
-        $editCustomCharsLink.click(function() {
-            var $customCharsModal = $('#custom-chars-modal');
-            var customChars = window.data.custom_chars || window.layouts[data.current_layout];
-            $customCharsModal.find('textarea').val(customChars);
-
-            $(document).off('keypress');
-        });
-
-        $customCharsModalOkButton = $('#custom-chars-modal--ok-button');
-        $customCharsModalOkButton.click(function() {
-            var $customCharsModal = $('#custom-chars-modal');
-            var customCharsSubmitted = $customCharsModal.find('textarea').val();
-            var customCharsProccessed = customCharsSubmitted;
-            $customCharsModal.modal("hide");
-            window.layouts[data.current_layout] = customCharsProccessed;
-            window.data.chars = customCharsProccessed;
-            window.data.custom_chars = customCharsProccessed;
-            render_level();
-            save();
-
-            $(document).keypress(keyHandler);
-        });
-    }
 }
 
 function render_rigor() {
     chars = "<span id='rigor-number' onclick='inc_rigor();'>";
     chars += '' + data.consecutive;
     chars += '<span>';
-    $('#rigor').html('click to set intensity: ' + chars);
+    $('#rigor').html('click to set required repititions: ' + chars);
 }
 
 function render_stats() {
     $("#stats").text([
-        "raw WPM: ", hpm / 5, " ",
-        "accuracy: ", ratio, "%"
+        "hits per minute: ", hpm, " ",
+        "correctness: ", ratio, "%"
     ].join(""));
 }
 
@@ -360,14 +357,4 @@ function get_training_chars() {
 
 function choose(a) {
     return a[Math.floor(Math.random() * a.length)];
-}
-
-function showActiveLayoutKeyboard() {
-    // Hide all, then show the active.
-    $('.keyboard-layout').hide();
-    var currentLayout = data.current_layout;
-    // Custom chars have no default layout.
-    if (currentLayout != CUSTOM_LAYOUT) {
-        $('.keyboard-layout[data-layout="' + currentLayout + '"]').show()
-    }
 }
