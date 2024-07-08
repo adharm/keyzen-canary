@@ -3,7 +3,7 @@
 
 ## About
 
-This is a fork of [Keyzen-Miryoku by bashu](https://github.com/bashu/keyzen-miryoku), modified for learning the [Canary](https://github.com/Apsu/Canary) keyboard layout in addition to the [Miryoku](https://github.com/manna-harbour/miryoku)layout. 
+This is a fork of [Keyzen-Miryoku by bashu](https://github.com/bashu/keyzen-miryoku), modified for learning the [Canary](https://github.com/Apsu/Canary) keyboard layout in addition to the [Miryoku](https://github.com/manna-harbour/miryoku) layout. 
 
 The key sequence focuses on learning the base layer alphas home row, then gradually introduces keys in the top and bottom rows. Common punctuation and web navigation characters are added to the mix after learning every lowercase letter. Alpha letters and uncommon punctuation marks are added last.
 

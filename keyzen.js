@@ -6,14 +6,14 @@ var start_time = 0;
 var hpm = 0;
 var ratio = 0;
 
-data.chars = " fjdkslaghrueiwoqptyvmcxzbn1234567890'\",.!?:;/@$%&#*()_ABCDEFGHIJKLMNOPQRSTUVWXYZ~+-={}|^<>`[]\\";
+data.chars = " tnsericagmpfyoluwbzdhvjqkx1234567890'\",.!?:;/@$%&#*()_ABCDEFGHIJKLMNOPQRSTUVWXYZ~+-={}|^<>`[]\\";
 data.consecutive = 5;
 data.word_length = 7;
 data.current_layout = "canary";
 layouts={};
 layouts["azerty"] = " fjdkslqmghrueizoaptyvcxwbn1234567890'\",.!?:;/@$%&#*()_ABCDEFGHIJKLMNOPQRSTUVWXYZ~+-={}|^<>`[]\\";
 layouts["beakl15"] = " asetinybducorhfqzxgkmlpjvw1234567890'\",.!?:;/@$%&#*()_ABCDEFGHIJKLMNOPQRSTUVWXYZ~+-={}|^<>`[]\\";
-layouts["canary"] = "tnsericagmpfyoluwbzdhvjqkx1234567890'\",.!?:;/@$%&#*()_ABCDEFGHIJKLMNOPQRSTUVWXYZ~+-={}|^<>`[]\\"
+layouts["canary"] = " tnsericagmpfyoluwbzdhvjqkx1234567890'\",.!?:;/@$%&#*()_ABCDEFGHIJKLMNOPQRSTUVWXYZ~+-={}|^<>`[]\\";
 layouts["colemak"] = " tnseriaodhplfuwyqgjvmcxzbk1234567890'\",.!?:;/@$%&#*()_ABCDEFGHIJKLMNOPQRSTUVWXYZ~+-={}|^<>`[]\\";
 layouts["colemak-dh"] = " tnseriaogmplfuwyqbjvhdcxzk1234567890'\",.!?:;/@$%&#*()_ABCDEFGHIJKLMNOPQRSTUVWXYZ~+-={}|^<>`[]\\";
 layouts["colemak-dhk"] = " tnseriaogkplfuwyqbjvhdcxzm1234567890'\",.!?:;/@$%&#*()_ABCDEFGHIJKLMNOPQRSTUVWXYZ~+-={}|^<>`[]\\";
