@@ -1,9 +1,8 @@
 {
-  // Required
   "name": "KeyZen",
   "version": "1.0",
 
-  "description": "A touch typing app for Chrome, src is @ https://github.com/bashu/keyzen-miryoku",
+  "description": "A touch typing app for Chrome, src is @ https://github.com/adharm/keyzen-canary",
   "icons": {
     "128": "app_icon.png"
   },

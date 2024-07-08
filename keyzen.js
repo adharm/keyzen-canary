@@ -9,10 +9,11 @@ var ratio = 0;
 data.chars = " fjdkslaghrueiwoqptyvmcxzbn1234567890'\",.!?:;/@$%&#*()_ABCDEFGHIJKLMNOPQRSTUVWXYZ~+-={}|^<>`[]\\";
 data.consecutive = 5;
 data.word_length = 7;
-data.current_layout = "qwerty";
+data.current_layout = "canary";
 layouts={};
 layouts["azerty"] = " fjdkslqmghrueizoaptyvcxwbn1234567890'\",.!?:;/@$%&#*()_ABCDEFGHIJKLMNOPQRSTUVWXYZ~+-={}|^<>`[]\\";
 layouts["beakl15"] = " asetinybducorhfqzxgkmlpjvw1234567890'\",.!?:;/@$%&#*()_ABCDEFGHIJKLMNOPQRSTUVWXYZ~+-={}|^<>`[]\\";
+layouts["canary"] = "tnsericagmpfyoluwbzdhvjqkx1234567890'\",.!?:;/@$%&#*()_ABCDEFGHIJKLMNOPQRSTUVWXYZ~+-={}|^<>`[]\\"
 layouts["colemak"] = " tnseriaodhplfuwyqgjvmcxzbk1234567890'\",.!?:;/@$%&#*()_ABCDEFGHIJKLMNOPQRSTUVWXYZ~+-={}|^<>`[]\\";
 layouts["colemak-dh"] = " tnseriaogmplfuwyqbjvhdcxzk1234567890'\",.!?:;/@$%&#*()_ABCDEFGHIJKLMNOPQRSTUVWXYZ~+-={}|^<>`[]\\";
 layouts["colemak-dhk"] = " tnseriaogkplfuwyqbjvhdcxzm1234567890'\",.!?:;/@$%&#*()_ABCDEFGHIJKLMNOPQRSTUVWXYZ~+-={}|^<>`[]\\";
@@ -21,7 +22,6 @@ layouts["halmak"] = " tanehosibqruldwjqcpvxmkfyg1234567890'\",.!?:;/@$%&#*()_ABC
 layouts["workman"] = " tnhesoaigywfrudpqbjclmxzvk1234567890'\",.!?:;/@$%&#*()_ABCDEFGHIJKLMNOPQRSTUVWXYZ~+-={}|^<>`[]\\";
 layouts["qwerty"] = " fjdkslaghrueiwoqptyvmcxzbn1234567890'\",.!?:;/@$%&#*()_ABCDEFGHIJKLMNOPQRSTUVWXYZ~+-={}|^<>`[]\\";
 layouts["qwertz"] = " fjdkslaghrueiwoqptzvmcxybn1234567890'\",.!?:;/@$%&#*()_ABCDEFGHIJKLMNOPQRSTUVWXYZ~+-={}|^<>`[]\\";
-
 
 $(document).ready(function() {
     load_audio();
